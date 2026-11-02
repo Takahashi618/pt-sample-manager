@@ -1,0 +1,59 @@
+MIT License
+
+Copyright (c) 2026 Takahashi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+About AI: this software was made with AI (Anthropic's Claude) under the
+direction and decisions of the author, Takahashi. Most of the program code and
+of the text in the documents was written by the AI. Depending on the laws of
+your country or region, parts made by AI may not be protected by copyright.
+The permission above is granted to the extent of the rights the author may
+hold.
+
+The app also contains parts made by others, each with its own terms. See
+"同梱部品のライセンス.txt" (Third-party licenses).
+
+------------------------------------------------------------
+日本語での説明（参考です。条件は上の英文のとおりです）
+------------------------------------------------------------
+
+このソフトウェア「PTサンプルマネージャ」（アプリと、マニュアルなどの文書）は、
+MIT ライセンスで配布しています。著作権者の表示は「Takahashi」です。
+
+- 無料で、使う・複製する・変更する・配る・販売することができます
+- 配るときは、上の著作権の表示と許諾の文（英文）を一緒に入れてください
+- 無保証です。使ったことで起きたことについて、作者は責任を負いません
+
+AI で作ったことについて
+
+  このソフトウェアは、作者（Takahashi）の指示と判断のもとで、
+  AI（Anthropic 社の Claude）を使って作りました。
+  プログラムのコードとマニュアルなどの文章の大部分は、AI が書いたものです。
+  AI が作った部分には、国や地域の法律によっては著作権が生じないことがあります。
+  上の許諾は、作者が持ちうる権利の範囲で与えるものです。
+
+同梱している部品について
+
+  アプリの中には、Python・wxPython・PyObjC・grpcio など、ほかの人が作った
+  部品が入っています。それらの部品には、それぞれの条件があります。
+  「同梱部品のライセンス.txt」を見てください。
+  アプリの中には、作者が作った別の道具の部品
+  （素材の名前の解析・加工・Pro Tools のセッション情報の読み取り）も
+  入っています。これも、このライセンスで配ります。

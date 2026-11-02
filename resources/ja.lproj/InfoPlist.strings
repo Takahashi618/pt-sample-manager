@@ -1,0 +1,9 @@
+/* PTサンプルマネージャ: 日本語の名前と許可の説明（Mac の言語が日本語のとき）。 */
+"CFBundleName" = "PTサンプルマネージャ";
+"CFBundleDisplayName" = "PTサンプルマネージャ";
+"NSAppleEventsUsageDescription" = "アプリ自身から読み上げを頼めないときだけ、予備の方法として System Events で VoiceOver に読み上げを頼みます。";
+"NSDesktopFolderUsageDescription" = "デスクトップに置いたサンプルを読み込むために使います。";
+"NSDocumentsFolderUsageDescription" = "書類フォルダに置いたサンプルを読み込むために使います。";
+"NSDownloadsFolderUsageDescription" = "ダウンロードしたサンプルを読み込むために使います。";
+"NSRemovableVolumesUsageDescription" = "外付けドライブに置いたサンプルを読み込むために使います。";
+"NSNetworkVolumesUsageDescription" = "ネットワーク上のフォルダに置いたサンプルを読み込むために使います。";

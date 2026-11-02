@@ -1,0 +1,367 @@
+﻿PT Sample Manager Manual
+
+Version 1.1.0. The author is Takahashi. This software and this manual were made with AI (Anthropic's Claude; see chapter 17).
+Contents. There are 19 chapters.
+1. What this app does
+2. Requirements
+3. Installing
+4. Getting started: add your sample folders
+5. The window layout
+6. Finding samples
+7. Previewing
+8. Placing in Pro Tools
+9. Processing to match the session
+10. Correcting tags, category and type
+11. Keyboard commands and menus
+12. Notification sounds and speech
+13. Files the app creates
+14. Troubleshooting
+15. Removing the app
+16. Limits and cautions
+17. Made with AI
+18. License
+19. Version history
+
+== 1. What this app does
+
+This app lets you find audio samples, listen to them, and place them on Pro Tools tracks, whether they come from Splice or from your own folders. It is designed to be used with VoiceOver and the keyboard only.
+- Add a sample folder and scan it, and the app lists the sounds inside (WAV, AIFF, FLAC, MP3, OGG). For a Splice folder, you can look through samples pack by pack
+- Filter by file name, type (one-shot or loop), mono or stereo, pack, favorites, category and tags
+- In the list, Space previews a sample and Return places it in Pro Tools. You can choose the destination track from inside the app
+- If you tell the app the tempo and key of the Pro Tools session, it transposes the sample and fits its length before placing it. You can preview the processed sound first
+- Loops can be placed in a row, such as 4 copies every 4 bars
+
+VoiceOver speaks the results. Operations that take time (scanning and placing) also play a short sound when they start and finish.
+
+== 2. Requirements
+
+The table has 8 rows and 3 columns: “Item”, “Needed?” and “Notes”.
+- Item: A Mac with Apple silicon (M1 or later) / Needed?: Yes / Notes: It does not run on Intel Macs
+- Item: macOS 15 or later / Needed?: Yes / Notes: Tested by the author on macOS 15.7.8
+- Item: VoiceOver / Needed?: Yes / Notes: Results are spoken by VoiceOver
+- Item: Pro Tools 2025.6 or later / Needed?: For placing / Notes: Tested by the author on Pro Tools 2026.4.1. Not needed just to find and listen
+- Item: Samples / Needed?: Yes / Notes: WAV, AIFF, FLAC, MP3 and OGG are supported
+- Item: Splice / Needed?: Useful / Notes: Adding a Splice folder lets you filter by pack
+- Item: ffmpeg / Needed?: For processing / Notes: Used to match tempo and key and to change between mono and stereo. Install it with Homebrew
+- Item: rubberband / Needed?: Improves the sound / Notes: If installed, tempo and key processing uses it. Install it with Homebrew
+
+You do not need to install Python or anything like it. It is inside the app.
+The app's window and speech follow your Mac's language settings: whichever of English and Japanese comes first in the preferred languages (System Settings, General, Language & Region). If neither is listed, the app uses English. To change the language, change the setting and open the app again.
+
+== 3. Installing
+
+-- 3.1 Putting the app in place
+
+1. Open the zip file in Finder (select it and press Command-O). A folder named “PTサンプルマネージャ_1.1.0” appears in the same place. The folder and the app have Japanese names on disk; when your Mac is in English, Finder shows the app as PT Sample Manager
+2. Move the app in the folder to the Applications folder. Select it in Finder and press Command-C, then press Option-Command-V in the Applications folder (this moves it)
+3. You can keep the manual and other documents anywhere
+
+-- 3.2 Opening the app for the first time
+
+This app is not notarized by Apple. macOS may therefore stop it from opening the first time when it came from a zip file downloaded from the internet. If that happens, open it in one of these two ways.
+
+- Method 1: Open it from System Settings
+
+1. Try to open the app once. When you are told it cannot be opened, close the message with Done
+2. Open Privacy & Security in System Settings and go down to the Security section. There is a message that PT Sample Manager was blocked, and an Open Anyway button
+3. Press Open Anyway and approve with your password or Touch ID
+4. Open the app again, and choose Open Anyway when asked to confirm
+
+The wording and button names can differ slightly between macOS versions. After the first time, the app opens normally.
+
+- Method 2: Remove the quarantine mark in Terminal
+
+After moving the app to the Applications folder, run this one line in Terminal. The Japanese name is the app's real name on disk.
+xattr -dr com.apple.quarantine "/Applications/PTサンプルマネージャ.app"
+This removes the “quarantine” mark that files downloaded from the internet carry. After that, the app opens normally.
+
+-- 3.3 ffmpeg and rubberband (for processing)
+
+Processing to match the session tempo and key (chapter 9) and changing between mono and stereo (chapter 8) use ffmpeg. If rubberband is also installed, tempo and key processing uses it and the sound quality improves. Install both with Homebrew by running this one line in Terminal.
+brew install ffmpeg rubberband
+The app looks for them in the Homebrew locations (/opt/homebrew/bin and /usr/local/bin). After installing them, open the app again. The bottom of the Session Settings window (Command-S) says which one is in use. You need neither just to find, listen, and place samples without processing.
+
+-- 3.4 When macOS asks for permission
+
+- When you scan samples in the Documents, Desktop or Downloads folders or on an external drive, macOS asks whether PT Sample Manager may access those files. Choose Allow. Without it, the app cannot read the sounds in that folder
+- You may be asked for permission to control System Events. This is for a backup way of speaking, and the app works without it
+
+== 4. Getting started: add your sample folders
+
+When the app opens, the focus is in the file name search field. The list is empty at first, so add a sample folder as a “source” and scan it.
+1. Press Command-F to open Manage Source Folders. The focus is in the folder path field
+2. Enter the folder path. You can also Tab to the button named “Open the folder chooser” (its label on the screen is Browse for Folder) and press Return to choose a folder. A Splice folder is usually “Splice” in your home folder (you can enter ~/Splice)
+3. If the name field is empty, the folder name is used. For the kind, choose “Splice (split by pack)” for a Splice folder, and “Regular folder” otherwise. If you pick the folder with the chooser, the app looks inside and selects the kind for you
+4. Press Return in the path or name field to add it (the button named “Add a source with what you entered” does the same; its label is Add This Source). The app says something like: Added “Splice”
+5. Press Escape to close, then press Command-R to scan. With many sounds this can take several minutes. When it finishes, the app speaks the count and the samples appear in the list
+
+You can add as many sources as you like. If you add Splice and your own sample folders separately, Command and a number switches between them (chapter 6).
+
+-- How scanning works
+
+- When one source is selected in the source filter, only that folder is scanned
+- When “All sources” is selected, all the added folders are scanned
+- Only when there are no sources at all does a window appear to choose a folder to scan
+
+You can scan as often as you like. Sounds already added are skipped, and only new ones are added. If an external drive is disconnected and a folder cannot be found, the app plays a low sound and says “[Warning] … (The folder does not exist)”.
+To remove a source, select it in the list in Manage Source Folders and press the button named “Remove the source chosen in the list” (its label is Remove Selected Source). Confirm with Yes. The sounds added from that folder leave the list too (the files themselves are not deleted).
+
+== 5. The window layout
+
+From the top, the window has the search conditions (file name, type, channel format, source, pack, favorites, category, tags, Search), the search results, the preview volume, the action buttons, and the status display.
+These are the places Tab stops at in the main window, in order. Each name is the first sentence VoiceOver reads. Shift-Tab goes back in reverse order. The table has 18 rows and 3 columns: “Order”, “Spoken name” and “Kind”.
+- Order: 1 / Spoken name: File name search / Kind: Text field
+- Order: 2 / Spoken name: Type filter / Kind: Menu
+- Order: 3 / Spoken name: Channel format filter / Kind: Menu
+- Order: 4 / Spoken name: Source folder filter / Kind: Menu
+- Order: 5 / Spoken name: Pack filter / Kind: Menu
+- Order: 6 / Spoken name: Show only favorites / Kind: Checkbox
+- Order: 7 / Spoken name: Category search / Kind: Text field
+- Order: 8 / Spoken name: Tag search / Kind: Text field
+- Order: 9 / Spoken name: Search / Kind: Button
+- Order: 10 / Spoken name: Search results / Kind: List
+- Order: 11 / Spoken name: Preview volume / Kind: Menu
+- Order: 12 / Spoken name: Preview Play/Stop / Kind: Button
+- Order: 13 / Spoken name: Place in Pro Tools / Kind: Button
+- Order: 14 / Spoken name: Copy Path / Kind: Button
+- Order: 15 / Spoken name: Edit Tags and Type / Kind: Button
+- Order: 16 / Spoken name: Scan Folders / Kind: Button
+- Order: 17 / Spoken name: Session Settings / Kind: Button
+- Order: 18 / Spoken name: Manage Sources / Kind: Button
+
+The status display at the bottom shows the text of the last result. You can read it by moving there with VoiceOver.
+
+== 6. Finding samples
+
+-- 6.1 Searching and filtering
+
+Fill in the search conditions and press Return in the search field (or in the category and tag fields), or press Search. The app speaks the number found, and plays a low sound if there are none. Results must match all the conditions at once.
+- File name: matches part of the name. Upper and lower case are treated the same. Japanese file names work too
+- Type: one-shots only or loops only. When scanning, a file with loop, groove, beat or similar in its name counts as a loop, and everything else as a one-shot. You can correct this (chapter 10)
+- Channel format: mono only or stereo only
+- Source: one of the folders you added, or all of them
+- Pack: a pack in a Splice source. Packs are sorted with the most sounds first, and the count of each is spoken. Only packs that match the current conditions are listed, so a pack you choose always has results. If you change the type or another condition so that the chosen pack no longer matches, the app says so and clears the pack filter
+- Show favorites only: turning it on searches again right away
+- Category: matches the exact name. Tags: separate several with commas to find samples that have all of them
+
+-- 6.2 How the list is read
+
+The Up and Down arrows in the search results read one row at a time, in this order: file name, “favorite” if it is one, type, BPM, key, length, sample rate, bit depth, mono or stereo, pack, tags. BPM and key are read only when they are in the file name (the app reads how Splice names its files).
+Pressing a letter key in the list jumps to the sample that starts with that letter (normal list behavior).
+
+-- 6.3 Favorites
+
+Select a sample in the list and press Command-D to add it to favorites. Press again to remove it. When you add one, the app says how many there are in all. If you remove a favorite while “Show favorites only” is on, its row leaves the list.
+
+-- 6.4 Jumping to sources and packs
+
+- Command-1 switches to all sources, and Command-2 and up switch to the sources in the order you added them. Switching searches again and speaks the count
+- Command-P moves to the pack filter. Choose with the Up and Down arrows, then press Tab 4 times to reach Search and press Return (choosing a pack alone does not search again)
+
+== 7. Previewing
+
+Press Space in the search results to play. Press it again to stop. Pressing Space on another row switches to that sound.
+Command-Up Arrow and Command-Down Arrow change the volume in 10% steps (you can stay in the list). The app speaks the current volume and adds “It cannot go higher” at the limit. You can also Tab to the preview volume menu and choose there. The volume is remembered for next time. It starts at 70%.
+In a text field, Command-Up and Command-Down Arrow move to the start and end of the text (the volume does not change).
+
+== 8. Placing in Pro Tools
+
+-- 8.1 How to place
+
+1. Open a session in Pro Tools and put the edit cursor where you want the sample
+2. Decide the destination audio track. Select a track in Pro Tools, or use Command-T in the app (8.2)
+3. Select a sample in the app's list and press Return. After a short sound the app says “Placing in Pro Tools”, and it speaks the result when done
+
+On success you hear something like “[Info] Placed file name on track “Audio 1”, at …”. Pro Tools does not come to the front, so you can stay in the app, choose the next sample, and place it.
+Placing needs Pro Tools running with a session open. The app connects to Pro Tools directly (using the Pro Tools feature called PTSL).
+
+-- 8.2 Choosing the destination track in the app (Command-T)
+
+Selecting a track in Pro Tools without seeing the screen takes effort, and if the selection is wrong, nothing can be placed. Press Command-T to get the list of audio tracks in the open session. Choose one with the Up and Down arrows and press Return, and samples go to that track from then on, whatever is selected in Pro Tools.
+Choose “The track selected in Pro Tools (no fixed destination)” at the top of the list to clear the choice. The choice is remembered until you close the app. If you open another session and the track no longer exists, the app reads out the tracks that exist and asks you to choose again.
+
+-- 8.3 When a sample cannot be placed
+
+- Only audio tracks can take samples. If an instrument, aux or master track is selected, the app explains what to select, such as: The selected track, “Inst1”, is not an audio track. Select one of these in Pro Tools, then try again: Audio 1, Audio 2
+- A different channel format still works. Pro Tools will not put a mono sample on a stereo track, so the app changes the sample first. Mono to stereo only copies the same sound to left and right, so the sound does not change. Stereo to mono mixes left and right, so the app says the sound changes. This needs ffmpeg
+- After placing, the app checks where the sample actually went. When Pro Tools cannot use the track you specified, it may silently use another. In that case the app undoes it and speaks a warning. If the check itself fails, the app also undoes it and says “The placement could not be confirmed, so it was undone”
+
+-- 8.4 Snapping to the beat
+
+If the edit cursor is off the beat, the placed sound does not line up with the metronome. By default, the sample goes to the nearest beat, and the app says how far it moved, such as “The cursor was off the beat, so the sample was moved 187 milliseconds earlier to the nearest beat”. To place exactly at the cursor, turn off “Snap the cursor position to the beat” in Session Settings (Command-S).
+
+== 9. Processing to match the session
+
+Press Command-S to open Destination Session Settings. If you enter the tempo and key of the Pro Tools session, each sample is processed to match them before it is placed. The sample's BPM and key are read from its file name (anything that cannot be read is left unmatched).
+- Tempo: the button after the tempo field, named “Read the tempo of the open session into the field above” (its label is Get Tempo from Pro Tools), reads and enters the tempo of the open session. If a value you typed differs from the session, the sample gets the wrong length, so reading it is the safe way. Leave it empty to keep the length
+- Key: choose the note with the Up and Down arrows, and switch between major and minor with the Left and Right arrows (the app speaks the result). “Not specified” means no transposing. When the key is empty, it starts with the key of the sample selected in the list
+- Preview with these settings: the button named “Process the selected sample with these settings and play it” (its label is Preview with These Settings Play/Stop) plays the sound processed with what you entered. Press again to stop. Control-Shift-L does the same. The app says what it did (“Processed: up 4 semitones, length times 0.750.”). Processing can take a few seconds
+- Process automatically when placing: if off, nothing is processed even with a tempo and key entered
+
+Return confirms, and Escape goes back without changing anything. If an entry such as the tempo is not valid, the app gives the reason and returns to that field.
+
+-- Tempo and key are cleared when you close the app
+
+They differ from session to session, so this keeps old values from being used by mistake in another session. How to place (position, copies, interval, snapping) and the preview volume are kept.
+If the tempo you entered differs from the open session, nothing is placed and the app says “[Warning] The tempo in the settings, 130, differs from the session, 160…”.
+
+-- 9.1 Choosing a position and placing loops in a row
+
+Set these under How to Place in the same window.
+- Turn off Place at the edit cursor to place at the bar and beat in the position field. Separate bar, beat and tick with vertical bars, like 17|1|000 (17|1 also works)
+- Set Number of copies to 2 or more to place them every so many bars, as set in the interval (up to 128 copies). The interval is counted in bars, so a tempo is needed
+- If the sample is longer than the interval, the next copy overlaps it and cuts off its end. The app says so after placing
+
+These are the items in Destination Session Settings (Command-S), in Tab order, with the first sentence VoiceOver reads and the value when the app is first opened. The table has 14 rows and 3 columns: “Spoken name”, “Kind” and “Initial value”.
+- Spoken name: Session tempo / Kind: Text field / Initial value: Empty
+- Spoken name: Read the tempo of the open session into the field above / Kind: Button / Initial value: No value
+- Spoken name: Session key note / Kind: Menu / Initial value: Not specified
+- Spoken name: Major or minor / Kind: Menu / Initial value: Major
+- Spoken name: Session sample rate selection / Kind: Menu / Initial value: 48000 Hz
+- Spoken name: Whether to process automatically when placing / Kind: Checkbox / Initial value: On
+- Spoken name: Whether to place at the edit cursor / Kind: Checkbox / Initial value: On
+- Spoken name: If the cursor is off the beat, place at the nearest beat / Kind: Checkbox / Initial value: On
+- Spoken name: Position to place at / Kind: Text field / Initial value: 1|1|000
+- Spoken name: Number of copies / Kind: Text field / Initial value: 1
+- Spoken name: Interval between copies, in bars / Kind: Text field / Initial value: 4
+- Spoken name: Process the selected sample with these settings and play it / Kind: Button / Initial value: No value
+- Spoken name: Cancel / Kind: Button / Initial value: No value
+- Spoken name: OK / Kind: Button / Initial value: No value
+
+== 10. Correcting tags, category and type
+
+Select a sample in the list and press Command-E to open the edit window. Correct the tags (several, separated by commas), the category, and the type (One-shot, Loop or Type unknown), and press Return to save. The app rewrites that row in the list and reads it.
+The type is only a guess from the file name made while scanning, so correct it here if it is wrong.
+
+== 11. Keyboard commands and menus
+
+All function keys use Command, so that pressing a letter in the list can still jump to samples starting with that letter. Space and Return preview and place only when you are in the search results.
+This is the same as Keyboard Commands in the app (Command-Shift-K). The table has 25 rows and 3 columns: “Where”, “Key” and “Action”.
+- Where: Result list / Key: Up and Down arrows / Action: Move between items
+- Where: Result list / Key: Letter keys / Action: Jump to the sample that starts with that letter
+- Where: Result list / Key: Space / Action: Play or stop the preview
+- Where: Result list / Key: Return / Action: Place in Pro Tools
+- Where: Search fields / Key: Return / Action: Run the search
+- Where: Buttons / Key: Return / Action: Press the button. Space also works
+- Where: Anywhere / Key: Command-D / Action: Add the selected sample to favorites. Press again to remove it
+- Where: Anywhere / Key: Command-number / Action: Switch the source. 1 is all sources; 2 and up follow the order you added them
+- Where: Anywhere / Key: Command-P / Action: Move to the pack filter
+- Where: Anywhere / Key: Command-Up and Command-Down arrows / Action: Raise or lower the preview volume. In a text field they move to the start and end of the text
+- Where: Session Settings / Key: Up and Down arrows / Action: Choose the key note
+- Where: Session Settings / Key: Left and Right arrows / Action: Switch between major and minor
+- Where: Session Settings / Key: Control-Shift-L / Action: Play the sample processed with those settings. Press again to stop
+- Where: Path and name fields in Manage Sources / Key: Return / Action: Add that source. Press Escape to close
+- Where: Dialogs / Key: Return / Action: Confirm and close
+- Where: Dialogs / Key: Escape / Action: Go back without changing anything
+- Where: Anywhere / Key: Command-C / Action: Copy the path of the selected sample. In a text field it copies the selected text
+- Where: Anywhere / Key: Command-E / Action: Edit the tags, category and type
+- Where: Anywhere / Key: Command-S / Action: Set the session tempo and key. How samples are placed is also set here
+- Where: Anywhere / Key: Command-F / Action: Manage the source folders
+- Where: Anywhere / Key: Command-T / Action: Choose the destination track
+- Where: Anywhere / Key: Command-R / Action: Scan the folders
+- Where: Anywhere / Key: Tab / Action: Move to the next control. With Shift, the previous one
+- Where: Anywhere / Key: Command-Shift-K / Action: Open this list of keyboard commands
+- Where: Anywhere / Key: Command-Q / Action: Quit PT Sample Manager
+
+These are the menu bar items. VO-M moves to the menu bar, and the Left and Right arrows choose a menu. An item with a key works with that key from any field. The table has 12 rows and 3 columns: “Menu”, “Item” and “Key”.
+- Menu: Actions / Item: Scan Folders / Key: Command-R
+- Menu: Actions / Item: Manage Sources / Key: Command-F
+- Menu: Actions / Item: Session Settings / Key: Command-S
+- Menu: Actions / Item: Choose Destination Track / Key: Command-T
+- Menu: Actions / Item: Place in Pro Tools / Key: None (choose it from the menu)
+- Menu: Actions / Item: Preview Play/Stop / Key: None (choose it from the menu)
+- Menu: Actions / Item: Add to or Remove from Favorites / Key: Command-D
+- Menu: Actions / Item: Edit Tags and Type / Key: Command-E
+- Menu: Actions / Item: Copy Path / Key: Command-C
+- Menu: Actions / Item: Quit / Key: Command-Q
+- Menu: Help / Item: Keyboard Commands / Key: Command-Shift-K
+- Menu: Help / Item: Version Information / Key: None (choose it from the menu)
+
+On macOS, Quit moves to the PT Sample Manager menu at the far left of the menu bar (Command-Q works everywhere). Version Information in the Help menu reads the app's version and build date.
+
+== 12. Notification sounds and speech
+
+Operations that take time play a short sound before the speech. The table has 3 rows and 2 columns: “When” and “Sound”.
+- When: A scan or placement starts / Sound: A very short sound (accepted)
+- When: It succeeded, or a search found something / Sound: A bright sound
+- When: It failed, a warning, or a search found nothing / Sound: A low sound
+
+The app asks VoiceOver to speak the result, so you hear it even if the focus does not move. Speech starts with “[Info]” when something went well, “[Warning]” when you should take care, and “[Error]” when something failed.
+
+== 13. Files the app creates
+
+The table has 4 rows and 3 columns: “Item”, “Location” and “Can it be deleted?”. “~” in a location means your home folder.
+- Item: The sample list (library), including favorites, tags, categories and sources / Location: ~/Library/Application Support/SampleManager/library.db / Can it be deleted?: Deleting it loses your sources and favorites (scanning again brings the list back)
+- Item: Session settings and preview volume / Location: ~/Library/Application Support/SampleManager/session_settings.json / Can it be deleted?: Deleting it returns them to the initial values
+- Item: Processed sounds / Location: ~/Library/Application Support/SampleManager/rendered/ / Can it be deleted?: Yes (Pro Tools makes its own copy in the session folder when importing)
+- Item: Log / Location: ~/Library/Logs/SampleManager.log / Can it be deleted?: Yes
+
+The app never changes or deletes your sample files.
+
+== 14. Troubleshooting
+
+-- “Could not connect to Pro Tools”
+
+Check that Pro Tools is running and a session is open. Right after Pro Tools opens, connecting can take a moment. Versions before Pro Tools 2025.6 cannot place samples.
+
+-- “No track that can take a sample is selected”
+
+Select one of the audio tracks named in the message in Pro Tools, or choose the destination with Command-T in the app, then press Return again (chapter 8).
+
+-- “The tempo in the settings … differs from the session …”
+
+Press Command-S, press the button after the tempo field (“Read the tempo of the open session into the field above”) to correct the tempo, then place the sample.
+
+-- “Neither ffmpeg nor rubberband is installed…” or “Processing failed, so nothing was placed”
+
+Install ffmpeg with Homebrew as in 3.3 and open the app again. When processing fails, nothing is placed, so that a sample never goes in at an unintended pitch or length.
+
+-- “The file was not found”
+
+This happens when a file was moved or deleted after scanning. For an external drive, connect it and try again. If you moved a file, add its new folder as a source and scan again.
+
+-- A scan adds no sounds, or “The folder does not exist”
+
+If the source folder is on an external drive, connect it and scan. The Documents, Desktop and Downloads folders need permission from macOS (3.4). If you did not allow it, go to Privacy & Security, Files and Folders in System Settings and turn on PT Sample Manager.
+
+-- You hear no speech
+
+Check that VoiceOver is on. The status display at the bottom shows the text of the last result.
+
+-- If you still cannot tell
+
+The log (~/Library/Logs/SampleManager.log) records when the app started and any errors.
+
+== 15. Removing the app
+
+1. Quit the app (Command-Q) and move the app in the Applications folder to the Trash
+2. To remove the library and settings, move ~/Library/Application Support/SampleManager to the Trash. The log is ~/Library/Logs/SampleManager.log
+
+Sounds placed in Pro Tools sessions keep playing after the app is removed, because the session folder has its own copies.
+
+== 16. Limits and cautions
+
+- It does not run on Intel Macs. Pro Tools 2025.6 or later is required
+- Samples can be placed only on audio tracks
+- BPM and key are read from file names. Samples without them in the name cannot be matched in tempo or key
+- Files deleted or moved after scanning do not leave the list automatically. Remove that source, add it again and scan, and only the files that exist remain (favorites and tags for that source are lost)
+- In a session where the tempo changes partway, the beat used for snapping may be counted from the first tempo. A cursor exactly on a beat is not moved
+- The placement check looks for a clip containing the file name on the track, so it is less strict on a track that already has the same sample
+- Placed sounds do not follow if you later change the tempo in Pro Tools
+- The app's window and speech are available in English and Japanese. Other languages show English
+
+== 17. Made with AI
+
+This software was made with AI (Anthropic's Claude) under the direction and decisions of the author, Takahashi. Most of the program code and of the text in this manual and other documents was written by the AI. Behavior in Pro Tools and VoiceOver was checked on the author's Mac. The English text was also written by the AI, and the author has not listened to the English speech with VoiceOver.
+Depending on the laws of your country or region, parts made by AI may not be protected by copyright. The license is granted to the extent of the rights the author may hold (chapter 18).
+
+== 18. License
+
+This software is released under the MIT License. The copyright notice is “Copyright (c) 2026 Takahashi”. It is free to use, copy, change, distribute and sell. When you distribute it, include the copyright notice and permission text. There is no warranty. The author is not responsible for anything that results from using it. The full text is in “ライセンス.txt” (License) in the package, in English with a Japanese summary.
+The app contains parts made by others, such as Python, wxPython, PyObjC and grpcio. Their terms are in “同梱部品のライセンス.txt” (Third-party licenses).
+Pro Tools is a product of Avid Technology, Splice is a product of Splice, and VoiceOver is a product of Apple Inc. This app is not affiliated with those companies. “PT” in the app's name stands for Pro Tools.
+
+== 19. Version history
+
+- 1.1.0 (2026-11-02): English window, speech and manual
+- 1.0.0 (2026-11-02): First packaged version

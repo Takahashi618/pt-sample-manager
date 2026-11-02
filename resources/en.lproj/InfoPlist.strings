@@ -1,0 +1,3 @@
+/* PT Sample Manager: the English names (shown when the Mac language is not Japanese). The English permission texts are the defaults in Info.plist. */
+"CFBundleName" = "PT Sample Manager";
+"CFBundleDisplayName" = "PT Sample Manager";

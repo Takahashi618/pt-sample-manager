@@ -1,0 +1,30 @@
+# PTサンプルマネージャ 依存パッケージ
+# インストール: .venv/bin/pip install -r requirements.txt
+
+# --- 実行時 ---
+wxPython>=4.2          # GUI（OS の標準の部品を使うのでスクリーンリーダーで読める）
+just_playback>=0.1.8   # 試聴再生（miniaudio ベース・非同期）
+soundfile>=0.12        # FLAC/MP3 等のメタデータ解析（libsndfile 同梱 wheel）
+grpcio>=1.76           # Pro Tools（PTSL）へ直接つなぐ（integration/ptsl_grpc.py）。
+                       # 1.76 から python3.14 のホイールがある
+py-ptsl>=601.0.1       # legacy 配置経路と、封筒の符号化を確かめるテストで使う
+
+# macOS の読み上げ名の設定に使う（ui/ax_label.py）。
+# wxPython の SetName は入力欄とリストに効かないため、下地の NSView へ
+# 直接設定する。フルの pyobjc は重いのでこの 2 つだけ。
+# 入っていなくても起動する（読み上げ名が弱くなるだけ）。
+pyobjc-core>=12.0 ; sys_platform == "darwin"
+pyobjc-framework-Cocoa>=12.0 ; sys_platform == "darwin"
+
+# --- Pro Tools 連携について ---
+# 主経路（spot）は py-ptsl を使わない。接続は grpcio で直接つなぐ。
+# 配置の確認と加工には、借りている部品（siblings/placement_core/ptcore）を
+# sys.path 経由で読む。pip の依存ではないので、ここには書けない。
+#
+# py-ptsl は legacy 経路（integration/ptsl_client.py）でのみ必要。
+# 601.0.1 は Pro Tools の新しいコマンドに追随していないため主経路から外した。
+# legacy 経路を消すときに一緒に外せる。
+
+# --- 開発用（テスト・lint） ---
+pytest>=8
+flake8>=7
