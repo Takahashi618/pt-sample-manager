@@ -1,6 +1,6 @@
 ﻿PT Sample Manager Manual
 
-Version 1.1.0. The author is Takahashi. This software and this manual were made with AI (Anthropic's Claude; see chapter 17).
+Version 1.1.1. The author is Takahashi. This software and this manual were made with AI (Anthropic's Claude; see chapter 17).
 Contents. There are 19 chapters.
 1. What this app does
 2. Requirements
@@ -52,7 +52,7 @@ The app's window and speech follow your Mac's language settings: whichever of En
 
 -- 3.1 Putting the app in place
 
-1. Open the zip file in Finder (select it and press Command-O). A folder named “PTサンプルマネージャ_1.1.0” appears in the same place. The folder and the app have Japanese names on disk; when your Mac is in English, Finder shows the app as PT Sample Manager
+1. Open the zip file in Finder (select it and press Command-O). A folder named “PTサンプルマネージャ_1.1.1” appears in the same place. The folder and the app have Japanese names on disk; when your Mac is in English, Finder shows the app as PT Sample Manager
 2. Move the app in the folder to the Applications folder. Select it in Finder and press Command-C, then press Option-Command-V in the Applications folder (this moves it)
 3. You can keep the manual and other documents anywhere
 
@@ -363,5 +363,6 @@ Pro Tools is a product of Avid Technology, Splice is a product of Splice, and Vo
 
 == 19. Version history
 
+- 1.1.1 (2026-11-03): Stopped putting each control's name in its help text as well, so VoiceOver does not say the same thing twice
 - 1.1.0 (2026-11-02): English window, speech and manual
 - 1.0.0 (2026-11-02): First packaged version

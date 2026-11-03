@@ -121,7 +121,7 @@ class Library:
         stats = {'total': 0, 'reused': 0, 'parsed': 0, 'unreadable': 0}
         for dirpath, _, filenames in os.walk(self.root):
             for fn in filenames:
-                if os.path.splitext(fn)[1].lower() not in AUDIO_EXTENSIONS:
+                if fn.startswith('.') or os.path.splitext(fn)[1].lower() not in AUDIO_EXTENSIONS:
                     continue
                 path = os.path.join(dirpath, fn)
                 stats['total'] += 1
@@ -134,6 +134,8 @@ class Library:
                 if old and old.size == st.st_size and (old.mtime == st.st_mtime):
                     entries.append(old)
                     stats['reused'] += 1
+                    if not old.sample_rate:
+                        stats['unreadable'] += 1
                     continue
                 entry = self._build_entry(path, st.st_size, st.st_mtime)
                 if entry is None:
@@ -141,6 +143,8 @@ class Library:
                     continue
                 entries.append(entry)
                 stats['parsed'] += 1
+                if not entry.sample_rate:
+                    stats['unreadable'] += 1
         self.entries = entries
         self.save()
         return stats
@@ -163,20 +167,32 @@ class Library:
     def save(self) -> None:
         os.makedirs(os.path.dirname(os.path.abspath(self.index_path)), exist_ok=True)
         payload = {'version': INDEX_VERSION, 'root': self.root, 'entries': [asdict(e) for e in self.entries]}
-        with open(self.index_path, 'w', encoding='utf-8') as f:
-            json.dump(payload, f, ensure_ascii=False)
+        tmp = f'{self.index_path}.{os.getpid()}.tmp'
+        try:
+            with open(tmp, 'w', encoding='utf-8') as f:
+                json.dump(payload, f, ensure_ascii=False)
+            os.replace(tmp, self.index_path)
+        except BaseException:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
+            raise
 
     def load(self, quiet: bool=False) -> bool:
         try:
             with open(self.index_path, encoding='utf-8') as f:
                 payload = json.load(f)
-        except (OSError, ValueError):
+            if payload.get('version') != INDEX_VERSION:
+                return False
+            if payload.get('root', self.root) != self.root:
+                return False
+            entries = [SampleEntry(**d) for d in payload.get('entries', [])]
+        except (OSError, ValueError, TypeError, AttributeError):
             if not quiet:
                 raise
             return False
-        if payload.get('version') != INDEX_VERSION:
-            return False
-        self.entries = [SampleEntry(**d) for d in payload.get('entries', [])]
+        self.entries = [e for e in entries if not e.filename.startswith('.')]
         return True
 
     def search(self, text: Optional[str]=None, bpm: Optional[int]=None, tolerance: int=0, half_double: bool=False, key: Optional[str]=None, relative: bool=False, kind: Optional[str]=None, pack: Optional[str]=None, sample_rate: Optional[int]=None, channels: Optional[int]=None, min_duration: Optional[float]=None, max_duration: Optional[float]=None, confident_only: bool=False, sort: str='name', limit: Optional[int]=None) -> List[SampleEntry]:

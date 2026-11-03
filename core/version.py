@@ -8,7 +8,7 @@
 - 1.0.0（2026-11-02）: 初めての配布版
 """
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 # .app と配布物のフォルダの本当の名前（英語の Mac でも変えない。
 # Finder での見え方は resources/*.lproj で決まる）
 BUNDLE_NAME = "PTサンプルマネージャ"

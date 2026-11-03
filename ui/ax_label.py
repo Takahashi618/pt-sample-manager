@@ -79,18 +79,24 @@ def _apply(view, label: str) -> bool:
 
 
 def label_control(ctrl, label: str) -> None:
-    """読み上げ名を、使える手段すべてで設定する。
+    """読み上げ名を設定する。
 
     - `SetName`      … wx の標準。Windows の SR と、macOS のボタン類に効く
     - `setAccessibilityLabel_` … macOS で確実に読ませる本命
-    - `SetToolTip`   … AXHelp。上が使えない環境での保険
+    - `SetToolTip` と `SetHint` … **本命が付かなかったときだけの保険**
 
+    **本命が付いたら保険は入れない。** VoiceOver は名前に続けてヒント（AXHelp）を
+    読むので、同じ文を入れるとタブで移るたびに 2 回聞くことになる
+    （作者の別のアプリの実測で、1 か所 10 秒を超えた。2026-10-13）。
     `SetHint` は入力欄にしか無いので、呼べるときだけ呼ぶ。
     """
     try:
         ctrl.SetName(label)
     except Exception:
         pass
+
+    if set_ax_label(ctrl, label):
+        return
 
     if hasattr(ctrl, "SetHint"):
         try:
@@ -102,5 +108,3 @@ def label_control(ctrl, label: str) -> None:
         ctrl.SetToolTip(label)
     except Exception:
         pass
-
-    set_ax_label(ctrl, label)

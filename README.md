@@ -6,7 +6,7 @@ VoiceOver とキーボードだけで使えるように作っています。名�
 画面と読み上げは、Mac の言語の設定に合わせて日本語か英語で出ます。
 
 - 動く環境: Apple シリコン（M1 以降）の Mac、macOS 15 以降、Pro Tools 2025.6 以降、VoiceOver
-- 使うだけなら: [Releases](https://github.com/Takahashi618/pt-sample-manager/releases) にある `PTSampleManager_1.1.0.zip`（表示名は PTサンプルマネージャ_1.1.0.zip）を開き、中の「はじめにお読みください.txt」を読んでください
+- 使うだけなら: [Releases](https://github.com/Takahashi618/pt-sample-manager/releases) にある `PTSampleManager_1.1.1.zip`（表示名は PTサンプルマネージャ_1.1.1.zip）を開き、中の「はじめにお読みください.txt」を読んでください
 - 使い方: [docs/manual.txt](docs/manual.txt)（HTML 版は [docs/manual.html](docs/manual.html)。ダウンロードしてブラウザで開きます）
 - ライセンス: MIT ライセンス（Copyright (c) 2026 Takahashi）。全文は [LICENSE.txt](LICENSE.txt)。
   配布版のアプリに入っているほかの人の部品の条件は [同梱部品のライセンス.txt](同梱部品のライセンス.txt)
@@ -48,7 +48,7 @@ It is designed to be used with VoiceOver and the keyboard only. "PT" stands for 
 The app's window and speech follow your Mac's language settings: English or Japanese.
 
 - Requirements: a Mac with Apple silicon (M1 or later), macOS 15 or later, Pro Tools 2025.6 or later, VoiceOver
-- To use it: open `PTSampleManager_1.1.0.zip` from [Releases](https://github.com/Takahashi618/pt-sample-manager/releases) and read “README (English).txt” inside
+- To use it: open `PTSampleManager_1.1.1.zip` from [Releases](https://github.com/Takahashi618/pt-sample-manager/releases) and read “README (English).txt” inside
 - Manual: [docs/manual_en.txt](docs/manual_en.txt) (HTML version: [docs/manual_en.html](docs/manual_en.html))
 - License: MIT License (Copyright (c) 2026 Takahashi). Full text in [LICENSE.txt](LICENSE.txt).
   Third-party components in the packaged app: [同梱部品のライセンス.txt](同梱部品のライセンス.txt)

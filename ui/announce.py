@@ -38,7 +38,7 @@ import sys
 import threading
 
 # 能動アナウンスを止める環境変数。**テスト用**（テストの最中に VoiceOver が
-# 読み出さないように。tests/conftest.py が立てる）。音を止める SM_SILENT とは
+# 読み出さないように。tests/__init__.py が立てる）。音を止める SM_SILENT とは
 # 分けてある（音だけ止めたい利用者から読み上げまで奪わないため）
 _ENV_NO_ANNOUNCE = "SM_NO_ANNOUNCE"
 
